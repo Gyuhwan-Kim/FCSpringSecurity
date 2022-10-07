@@ -2,6 +2,7 @@ package com.sp.fc.web.student;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,9 +20,9 @@ public class StudentManager implements AuthenticationProvider, InitializingBean 
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        StudentAuthenticationToken token = (StudentAuthenticationToken) authentication;
-        if(studentDB.containsKey(token.getCredentials())){
-            Student student = studentDB.get(token.getCredentials());
+        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
+        if(studentDB.containsKey(token.getName())){
+            Student student = studentDB.get(token.getName());
             return StudentAuthenticationToken.builder()
                     .principal(student)
                     .details(student.getUsername())
@@ -34,7 +35,7 @@ public class StudentManager implements AuthenticationProvider, InitializingBean 
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication == StudentAuthenticationToken.class;
+        return authentication == UsernamePasswordAuthenticationToken.class;
     }
 
     public List<Student> myStudentList(String teacherId){

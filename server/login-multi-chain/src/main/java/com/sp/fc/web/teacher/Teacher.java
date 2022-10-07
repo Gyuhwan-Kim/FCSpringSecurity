@@ -1,5 +1,6 @@
 package com.sp.fc.web.teacher;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sp.fc.web.student.Student;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class Teacher {
 
     private String id;
     private String username;
+    @JsonIgnore
     private Set<GrantedAuthority> role;
 
     private List<Student> studentList;
